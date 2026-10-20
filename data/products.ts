@@ -43,6 +43,8 @@ export type Product = {
   image?: string;
   /** Invented demo entry: replace with the real plugin. */
   placeholder?: true;
+  /** Test product for the Stripe checkout: never part of a production build (see SHOW_DEMO). */
+  demo?: true;
 
   /**
    * Showcase of a plugin sold by its maker: the page shows it and the button sends
@@ -64,6 +66,27 @@ export type Product = {
 };
 
 const both = PLATFORMS;
+
+/**
+ * The demo product exists only in development, or in a build with NEXT_PUBLIC_SHOW_DEMO=1
+ * (e.g. a Vercel preview used to try the Stripe checkout in test mode).
+ */
+const SHOW_DEMO = process.env.NODE_ENV !== "production" || process.env.NEXT_PUBLIC_SHOW_DEMO === "1";
+
+const DEMO_PRODUCT: Product = {
+  slug: "starplugzz-demo",
+  name: "StarPlugzz Demo",
+  vendor: "StarPlugzz",
+  category: "Synth",
+  price: 1,
+  platforms: both,
+  demo: true,
+  features: [
+    "Test product for the Stripe checkout",
+    "Pay with the test card 4242 4242 4242 4242, any future date and CVC",
+    "No real money is charged in test mode",
+  ],
+};
 
 // Showcases of plugins and DAWs sold by their makers: each links to the official page.
 export const products: readonly Product[] = [
@@ -170,10 +193,16 @@ export const products: readonly Product[] = [
     formats: { mac: ["Standalone"], windows: ["Standalone"] },
     store: { label: "View on ableton.com", url: "https://www.ableton.com/en/live/" },
   },
+  ...(SHOW_DEMO ? [DEMO_PRODUCT] : []),
 ];
 
 export function isPlatform(value: string): value is Platform {
   return (PLATFORMS as readonly string[]).includes(value);
+}
+
+/** Sold here through the cart and Stripe: it has a price and isn't a showcase of another maker's product. */
+export function isPurchasable(product: Product) {
+  return product.price != null && product.price > 0 && !product.store;
 }
 
 export function productsFor(platform: Platform) {

@@ -106,7 +106,8 @@ export function CartDrawer({
   const { platform } = useRoute();
   const reduce = useReducedMotion();
   const closeRef = useRef<HTMLButtonElement>(null);
-  const [checkout, setCheckout] = useState<"idle" | "demo">("idle");
+  const [checkout, setCheckout] = useState<"idle" | "loading">("idle");
+  const [checkoutError, setCheckoutError] = useState<string | null>(null);
 
   // Freeze page scroll under the sheet, focus the close button, Esc closes.
   useEffect(() => {
@@ -124,11 +125,24 @@ export function CartDrawer({
     };
   }, [isOpen, close]);
 
-  useEffect(() => {
-    if (checkout !== "demo") return;
-    const t = setTimeout(() => setCheckout("idle"), 1600);
-    return () => clearTimeout(t);
-  }, [checkout]);
+  // Server-side prices: only slugs, platforms and quantities leave the browser.
+  const startCheckout = async () => {
+    setCheckout("loading");
+    setCheckoutError(null);
+    try {
+      const res = await fetch("/api/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ lines: lines.map(({ slug, platform, qty }) => ({ slug, platform, qty })) }),
+      });
+      const data = (await res.json().catch(() => ({}))) as { url?: string; error?: string };
+      if (!res.ok || !data.url) throw new Error(data.error ?? "Checkout is unavailable right now.");
+      window.location.assign(data.url);
+    } catch (err) {
+      setCheckoutError(err instanceof Error ? err.message : "Checkout is unavailable right now.");
+      setCheckout("idle");
+    }
+  };
 
   const onDragEnd = (_: unknown, info: PanInfo) => {
     if (info.offset.x > 110 || info.velocity.x > 600) close();
@@ -213,13 +227,21 @@ export function CartDrawer({
                   </div>
                   <motion.button
                     type="button"
-                    onClick={() => setCheckout("demo")}
+                    onClick={startCheckout}
+                    disabled={checkout === "loading"}
+                    aria-busy={checkout === "loading"}
                     whileTap={{ scale: 0.97 }}
                     transition={PRESS}
-                    className="sun-fill h-12 rounded-full text-[16px] font-medium"
+                    className="sun-fill h-12 rounded-full text-[16px] font-medium disabled:opacity-70"
                   >
-                    {checkout === "demo" ? "Demo" : "Checkout"}
+                    {checkout === "loading" ? "Opening secure checkout…" : "Checkout"}
                   </motion.button>
+                  {checkoutError && (
+                    <p role="alert" className="text-center text-[13px] text-ink">
+                      {checkoutError}
+                    </p>
+                  )}
+                  <p className="text-center text-[12px] text-ink-soft">Secure payment by Stripe</p>
                 </footer>
               </>
             )}
