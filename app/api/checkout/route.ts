@@ -1,6 +1,9 @@
 import { getProduct, isPlatform, isPurchasable, PLATFORM_LABEL } from "@/data/products";
 import { CURRENCY, getStripe, toCents } from "@/lib/stripe";
 
+/** Tags these sessions in the Stripe Dashboard (fixed label + random suffix, as Stripe recommends). */
+const INTEGRATION_ID = "starplugzz-cart-checkout-ekpurwwp";
+
 const MAX_LINES = 50;
 const MAX_QTY = 20;
 
@@ -77,12 +80,15 @@ export async function POST(request: Request) {
       success_url: `${origin}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/`,
       locale: "auto",
+      integration_identifier: INTEGRATION_ID,
     });
 
     if (!session.url) return error(502, "Stripe didn't return a checkout page.");
     return Response.json({ url: session.url });
   } catch (err) {
-    console.error("[checkout] Stripe error:", err);
+    // Only the safe fields: never log the whole error object (it carries request details).
+    const e = err as { type?: string; code?: string; requestId?: string };
+    console.error("[checkout] Stripe error:", { type: e.type, code: e.code, requestId: e.requestId, message: err instanceof Error ? err.message : String(err) });
     const detail = err instanceof Error ? err.message : String(err);
     // Stripe's message helps while setting things up; visitors of the live site get a generic one.
     return error(502, process.env.NODE_ENV === "production" ? "Payment is unavailable right now." : detail);

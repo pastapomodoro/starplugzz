@@ -1,5 +1,6 @@
 import "server-only";
 import Stripe from "stripe";
+import { formatPrice } from "@/data/products";
 
 export const CURRENCY = "eur";
 
@@ -15,6 +16,5 @@ export function getStripe(): Stripe | null {
 /** Euros as in data/products.ts → the smallest currency unit Stripe expects. */
 export const toCents = (euros: number) => Math.round(euros * 100);
 
-/** Stripe amount (cents) → "€12,50" for display. */
-export const formatCents = (cents: number) =>
-  new Intl.NumberFormat("it-IT", { style: "currency", currency: CURRENCY.toUpperCase() }).format(cents / 100);
+/** Stripe amount (cents) → the site's own price format ("€1", "€4,99"). */
+export const formatCents = (cents: number) => formatPrice(cents / 100);

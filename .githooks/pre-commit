@@ -1,0 +1,8 @@
+#!/bin/sh
+# Blocks commits that add Stripe keys or webhook secrets (they belong in .env.local or Vercel's env vars).
+# Enabled per clone with: git config core.hooksPath .githooks
+if git diff --cached -U0 --no-color | grep -E '^\+' | grep -qE '(sk|rk)_(test|live)_[A-Za-z0-9]{10,}|whsec_[A-Za-z0-9]{10,}'; then
+  echo "pre-commit: this commit adds what looks like a Stripe key or webhook secret." >&2
+  echo "Keep it in .env.local (git-ignored) or in Vercel's environment variables." >&2
+  exit 1
+fi

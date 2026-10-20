@@ -1,7 +1,10 @@
 import type Stripe from "stripe";
 import { getStripe } from "@/lib/stripe";
 
-/** Called when a paid order should be delivered. */
+/**
+ * Called when a paid order should be delivered. Stripe can send the same event more than once,
+ * so once orders are stored, skip a session id that was already fulfilled.
+ */
 async function fulfill(session: Stripe.Checkout.Session) {
   // "slug:platform:qty" entries written by app/api/checkout/route.ts.
   const items = (session.metadata?.items ?? "").split(",").filter(Boolean);
@@ -39,11 +42,15 @@ export async function POST(request: Request) {
 
   switch (event.type) {
     case "checkout.session.completed":
-      // Cards are paid at this point; delayed methods (bank transfers) settle later, below.
-      if (event.data.object.payment_status === "paid") await fulfill(event.data.object);
+      // Cards are paid at this point; delayed methods (bank transfers) are still "unpaid" and settle below.
+      if (event.data.object.payment_status !== "unpaid") await fulfill(event.data.object);
       break;
     case "checkout.session.async_payment_succeeded":
       await fulfill(event.data.object);
+      break;
+    case "checkout.session.async_payment_failed":
+      // A delayed payment didn't go through: nothing to deliver. TODO: let the buyer know by email.
+      console.warn("[stripe] delayed payment failed", { session: event.data.object.id });
       break;
   }
 
