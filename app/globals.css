@@ -1,0 +1,326 @@
+/* Our component layer sits between Tailwind's components and utilities, so utilities still win. */
+@layer theme, base, components, sp-components, utilities;
+@import "tailwindcss";
+
+/* ───────────────────────── Tokens ───────────────────────── */
+
+/* Registered so the whole sky can morph when the platform changes. */
+@property --sky-top { syntax: "<color>"; inherits: true; initial-value: #dcebf8; }
+@property --sky-mid { syntax: "<color>"; inherits: true; initial-value: #eef5fc; }
+@property --sky-low { syntax: "<color>"; inherits: true; initial-value: #ffffff; }
+@property --accent { syntax: "<color>"; inherits: true; initial-value: #33c1f0; }
+@property --accent-strong { syntax: "<color>"; inherits: true; initial-value: #0e7fc4; }
+@property --accent-2 { syntax: "<color>"; inherits: true; initial-value: #ffd93b; }
+
+:root {
+  --ink: #0b1e4a;
+  --ink-soft: #2b4479;
+  --night: #0b1e4a;
+  --sky: #33c1f0;
+  --sun: #ffd93b;
+  --sun-deep: #f5b800;
+  --silver: #cbd8e6;
+  --white: #ffffff;
+
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+
+  --sky-top: #dcebf8;
+  --sky-mid: #eef5fc;
+  --sky-low: #ffffff;
+  --accent: #33c1f0;
+  --accent-strong: #0e7fc4;
+  --accent-2: #ffd93b;
+
+  transition:
+    --sky-top 700ms var(--ease-in-out),
+    --sky-mid 700ms var(--ease-in-out),
+    --sky-low 700ms var(--ease-in-out),
+    --accent 700ms var(--ease-in-out),
+    --accent-strong 700ms var(--ease-in-out),
+    --accent-2 700ms var(--ease-in-out);
+}
+
+/* Yellow is only ever opaque or fades through white: translucent yellow over blue reads as green. */
+
+/* Mac: aqua accents on the same light, angelic sky */
+:root[data-platform="mac"] {
+  --sky-top: #dcebf8;
+  --sky-mid: #eef5fc;
+  --sky-low: #ffffff;
+  --accent: #33c1f0;
+  --accent-strong: #0e7fc4;
+  --accent-2: #cbd8e6;
+}
+
+/* Windows: Aero-blue and yellow accents on the same light sky */
+:root[data-platform="windows"] {
+  --sky-top: #d6e6f7;
+  --sky-mid: #ecf3fc;
+  --sky-low: #ffffff;
+  --accent: #1e6fe0;
+  --accent-strong: #0b3a8c;
+  --accent-2: #ffd93b;
+}
+
+@theme inline {
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", system-ui, sans-serif;
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-sun: var(--sun);
+  --color-sun-deep: var(--sun-deep);
+  --color-sky: var(--sky);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+}
+
+/* ───────────────────────── Base ───────────────────────── */
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+html,
+body {
+  overscroll-behavior: none;
+}
+
+body {
+  background: var(--sky-low);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  min-height: 100svh;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+button {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+:focus-visible {
+  outline: 3px solid var(--sun);
+  outline-offset: 3px;
+  border-radius: 12px;
+}
+
+/* The search bar is the focus indicator for its own field (caret + raised glass). */
+[role="search"] input:focus-visible {
+  outline: none;
+}
+
+/* Lenis */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis:not(.lenis-autoToggle).lenis-stopped {
+  overflow: clip;
+}
+.lenis [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+/* Component classes live in a layer so Tailwind utilities (absolute, rounded-*, bg-*) can override them. */
+@layer sp-components {
+  /* ───────────────────────── Liquid glass ─────────────────────────
+     Apple-style: a clear, barely tinted lens. ::before bends and blurs what is
+     behind it (SVG refraction in Chromium, blur + saturate in Safari/Firefox);
+     ::after is the thin specular rim — bright along the top edge, a faint
+     catch-light along the bottom. */
+
+  .glass {
+    position: relative;
+    isolation: isolate;
+    border-radius: var(--radius, 22px);
+    box-shadow:
+      0 10px 30px -14px rgb(20 40 80 / 0.28),
+      0 1px 2px rgb(20 40 80 / 0.06);
+  }
+
+  .glass::before,
+  .glass::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    pointer-events: none;
+  }
+
+  .glass::before {
+    background: rgb(255 255 255 / 0.22);
+    -webkit-backdrop-filter: blur(14px) saturate(170%) brightness(1.06);
+    backdrop-filter: blur(14px) saturate(170%) brightness(1.06);
+  }
+
+  .lg-svg .glass::before {
+    backdrop-filter: url(#lg-refract) blur(4px) saturate(175%) brightness(1.06);
+  }
+
+  .glass::after {
+    background: linear-gradient(180deg, rgb(255 255 255 / 0.3) 0%, rgb(255 255 255 / 0) 42%);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.9),
+      inset 0 -1px 0 rgb(255 255 255 / 0.35),
+      inset 0 0 0 0.5px rgb(255 255 255 / 0.6),
+      inset 0 0 20px rgb(255 255 255 / 0.1);
+  }
+
+  /* Moving items (marquee cards) skip live refraction: on 30 moving layers it costs frames.
+     A frosted white keeps the same look over the light scene. */
+  .glass-lite::before {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none !important;
+    background: rgb(255 255 255 / 0.6);
+  }
+
+  /* Denser glass where long text sits (the cart). */
+  .glass-dense::before {
+    background: rgb(255 255 255 / 0.62);
+  }
+
+  /* Below lg, panels often sit on the busy art: thicken their frost there only. */
+  @media (max-width: 1023px) {
+    .glass-dense-sm::before {
+      background: rgb(255 255 255 / 0.62);
+    }
+  }
+
+  /* The one accent: a flat sunny yellow, no glow. */
+  .sun-fill {
+    background: var(--sun);
+    color: var(--ink);
+    box-shadow:
+      inset 0 1px 0 rgb(255 255 255 / 0.55),
+      0 6px 16px -8px rgb(150 110 0 / 0.5);
+  }
+
+  /* ───────────────────────── Background ───────────────────────── */
+
+  .sky {
+    background: linear-gradient(115deg, var(--sky-top) 0%, var(--sky-mid) 55%, var(--sky-low) 100%);
+  }
+
+
+
+  .bubble {
+    border-radius: 9999px;
+    background:
+      radial-gradient(circle at 32% 26%, rgb(255 255 255 / 0.95) 0 7%, rgb(255 255 255 / 0.25) 14%, transparent 34%),
+      radial-gradient(circle at 68% 78%, rgb(255 255 255 / 0.45) 0%, transparent 38%),
+      radial-gradient(circle at 50% 50%, rgb(255 255 255 / 0.05) 55%, rgb(255 255 255 / 0.55) 70%, rgb(255 255 255 / 0.1) 72%);
+    box-shadow:
+      inset 0 0 0 1px rgb(255 255 255 / 0.7),
+      inset -6px -10px 18px -6px color-mix(in srgb, var(--accent) 55%, transparent);
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translate3d(0, 0, 0); }
+    50% { transform: translate3d(0, -18px, 0); }
+  }
+  .bubble-float {
+    animation: float var(--dur, 9s) ease-in-out var(--delay, 0s) infinite;
+  }
+
+  /* ───────────────────────── Shelves (marquee) ───────────────────────── */
+
+  .shelf-viewport {
+    overflow: hidden;
+    touch-action: pan-y;
+    cursor: grab;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%);
+    mask-image: linear-gradient(90deg, transparent 0, #000 6%, #000 94%, transparent 100%);
+    padding-block: 18px 26px;
+  }
+  .shelf-viewport:active {
+    cursor: grabbing;
+  }
+  .shelf-track {
+    display: flex;
+    width: max-content;
+    gap: var(--shelf-gap, 20px);
+    will-change: transform;
+  }
+
+  /* Cards hidden until the shelf scrolls into view; GSAP reveals them. */
+  .shelf[data-cascade="pending"] .card-shell {
+    opacity: 0;
+  }
+
+  .card-img {
+    transition: transform 500ms var(--ease-out);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .card:hover .card-img {
+      transform: scale(1.04);
+    }
+  }
+
+  /* ───────────────────────── Placeholders ───────────────────────── */
+
+  /* Empty product poster: a clear glass slot waiting for the real artwork. */
+  .poster-empty {
+    background:
+      radial-gradient(90% 80% at 20% 0%, rgb(255 255 255 / 0.65) 0%, rgb(255 255 255 / 0) 60%),
+      linear-gradient(165deg, color-mix(in srgb, var(--accent) 5%, rgb(255 255 255 / 0.45)) 0%, color-mix(in srgb, var(--accent) 16%, rgb(255 255 255 / 0.2)) 100%);
+  }
+
+
+  .ph {
+    background:
+      radial-gradient(circle at 30% 22%, rgb(255 255 255 / 0.9) 0 6%, transparent 30%),
+      radial-gradient(circle at 75% 80%, color-mix(in srgb, var(--ph-b) 70%, transparent) 0%, transparent 60%),
+      linear-gradient(150deg, var(--ph-a) 0%, var(--ph-b) 100%);
+  }
+  .ph[data-cat="Synth"] { --ph-a: #8fe0ff; --ph-b: #33c1f0; }
+  .ph[data-cat="Effetti"] { --ph-a: #bfe9ff; --ph-b: #1e6fe0; }
+  .ph[data-cat="Drum"] { --ph-a: #fff6c9; --ph-b: #ffc93b; }
+  .ph[data-cat="Bundle"] { --ph-a: #5aa9f5; --ph-b: #0b3a8c; }
+  .ph[data-cat="mascot"] { --ph-a: #eaf7ff; --ph-b: #5cb6f5; }
+
+  /* ───────────────────────── Accessibility ───────────────────────── */
+
+  @media (prefers-reduced-motion: reduce) {
+    :root {
+      transition-duration: 0ms;
+    }
+    .bubble-float {
+      animation: none;
+    }
+    .card-img {
+      transition: none;
+    }
+  }
+
+  @media (prefers-reduced-transparency: reduce) {
+    .glass::before,
+    .lg-svg .glass::before {
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      background: rgb(255 255 255 / 0.94);
+    }
+  }
+
+  @media (prefers-contrast: more) {
+    .glass::after {
+      box-shadow: inset 0 0 0 2px var(--ink);
+    }
+  }
+
+  .sr-only-focusable:not(:focus) {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+}

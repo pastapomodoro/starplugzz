@@ -1,0 +1,171 @@
+{
+  "model": "gemini-nano-banana-2.1",
+  "openrouter_model": "black-forest-labs/flux.2-pro",
+  "style_prefix": "Style: minimal, clean Frutiger Aero. Bright, airy and light, with lots of white space. Smooth glossy aqua glass and soft gel, gentle gradients, soft light, one clear white specular highlight, at most a few small bubbles. Simple shapes, low detail, uncluttered, calm. No plants, no seaweed, no rocks, no fish or other creatures, no busy patterns. Colour palette made only of white, very light sky blue, aqua-cyan (#39C8F0), sky blue (#33C1F0), a touch of Aero blue (#1E6FE0) and small accents of sunny yellow (#FFD93B). Crisp and clean, without any lettering or logos.",
+  "groups": {
+    "home": {
+      "aspect_ratio": "16:9",
+      "image_size": "2K",
+      "openrouter_model": "black-forest-labs/flux.2-pro",
+      "skip_style": true,
+      "prefix": "The main character is an original anime angel: a graceful adult young woman with long sky-blue twin tails, two small yellow star hair clips, white headphones resting around her neck, a white jacket with sky-blue cuffs over a navy knee-length dress with a small yellow star on the chest, white tights and white boots. She has large soft white feathered angel wings and a thin, faint golden halo. Scene: an angelic yet subtly satanic Frutiger Aero heaven in very light colours only — white, pearl, pale sky blue and soft gold. Layered soft clouds and luminous mist, gentle god-rays, drifting white feathers and a few small glossy glass bubbles. Strong depth: blurred feathers and light in the foreground, the angel in the midground, clouds fading into bright haze far away. A large glowing sunny-yellow inverted pentagram magic circle lies on the cloud floor in deep perspective, its thin luminous lines receding into the distance and partly veiled by mist. Style: polished, painterly anime key-visual illustration with soft shading and fine detail — not flat, not chibi, not a cartoon. No text, no logos, no frames.",
+      "items": [
+        {
+          "file": "backgrounds/bg-home.png",
+          "prompt": "Wide 16:9 website background for the home page. She sits sideways on the edge of a soft cloud on the right third, legs crossed at the ankles, leaning slightly forward, one hand resting on the cloud and the other raised holding a small glowing sunny-yellow star; she looks towards the left with a gentle smile, wings half-open behind her. Full figure, large in the frame. The pentagram circle lies on the cloud floor in perspective in the lower centre-right, partly veiled by mist. Keep the left 55% of the image calm and uncluttered — only soft clouds, mist and light — so website content can sit there.",
+          "extend_top": 200
+        },
+        {
+          "file": "backgrounds/bg-home-mobile.png",
+          "aspect_ratio": "9:16",
+          "prompt": "Tall 9:16 phone background for the home page. She sits on a soft cloud in the lower half, legs crossed at the ankles, holding a small glowing sunny-yellow star up in one hand, wings half-open, looking up and to the left with a gentle smile. Full figure, large. The pentagram circle beneath her in perspective. Keep the top 45% calm and uncluttered — only soft sky, mist and light — for website content."
+        },
+        {
+          "file": "backgrounds/bg-home-tall.png",
+          "reference": "backgrounds/bg-home.png",
+          "aspect_ratio": "3:2",
+          "prompt": "Edit the reference image. Its top strip is a rough, blurry placeholder: repaint that strip as seamless, soft, bright sky and clouds that continue the scene naturally, with no shapes, figures or halos in it. Keep everything else exactly as in the reference — the same angel, pose, face, outfit, wings, halo, clouds, feathers, bubbles, pentagram circle, colours and lighting — with her sitting in the lower part of the frame and open sky above her."
+        }
+      ]
+    },
+    "scenes": {
+      "aspect_ratio": "16:9",
+      "image_size": "2K",
+      "openrouter_model": "google/gemini-nano-banana-2.1",
+      "skip_style": true,
+      "prefix": "Use the girl in the reference image as the main character and keep her exactly recognisable: same face, sky-blue twin tails, yellow star hair clips, white jacket, navy bodysuit with a yellow star and white boots. Integrate her naturally into a brand-new scene (do not paste the reference as a flat cut-out): match the lighting, add soft rim light and shadows so she belongs in it. Give her large soft white feathered angel wings and a thin, faint golden halo. Scene: an angelic yet subtly satanic Frutiger Aero heaven in very light colours only — white, pearl, pale sky blue and soft gold. Layered soft clouds and luminous mist, gentle god-rays, drifting white feathers and a few small glossy glass bubbles. Strong depth: blurred feathers and light in the foreground, the girl in the midground, clouds fading into bright haze far away. A large glowing sunny-yellow inverted pentagram magic circle lies on the cloud floor in deep perspective beneath her, its thin luminous lines receding into the distance and partly veiled by mist. Style: polished, painterly anime key-visual illustration with soft shading and fine detail — not flat, not chibi, not a cartoon. No text, no logos, no frames.",
+      "items": [
+        {
+          "file": "backgrounds/bg-shop.png",
+          "reference": "mascot/mascot-stand.png",
+          "prompt": "Wide 16:9 website background. Place her large on the right third, seen from head to knees, gently floating; the pentagram circle spreads under and behind her towards the centre. Keep the left 55% of the image calm and uncluttered — only soft clouds, mist and light — so website content can sit there."
+        },
+        {
+          "file": "backgrounds/bg-shop-mobile.png",
+          "reference": "mascot/mascot-stand.png",
+          "aspect_ratio": "9:16",
+          "prompt": "Tall 9:16 phone background. Place her large in the lower half, wings spread, the pentagram circle beneath her in perspective. Keep the top 45% calm and uncluttered — only soft sky, mist and light — for website content."
+        }
+      ]
+    },
+    "backdrops": {
+      "aspect_ratio": "16:9",
+      "image_size": "2K",
+      "openrouter_model": "black-forest-labs/flux.2-pro",
+      "skip_style": true,
+      "prefix": "A background with no people, no characters and no creatures: an angelic yet subtly satanic Frutiger Aero heaven in very light colours only — white, pearl, pale sky blue and soft gold. Layered soft clouds, luminous mist, gentle god-rays, a few drifting white feathers and a few small glossy glass bubbles. A large glowing sunny-yellow inverted pentagram magic circle lies far below on the cloud floor in deep perspective, faint and partly veiled by mist. Calm, airy, low contrast and slightly soft-focus, like a studio backdrop for product shots: the middle of the image stays clear, bright and uncluttered. Style: polished painterly anime key-visual background art with soft shading. No text, no logos, no frames.",
+      "items": [
+        {
+          "file": "backgrounds/bg-product.png",
+          "prompt": "Wide 16:9 website background. Open, roughly symmetric composition: a bright clear centre, clouds framing the left and right edges, the pentagram circle far below in the lower centre."
+        },
+        {
+          "file": "backgrounds/bg-product-mobile.png",
+          "aspect_ratio": "9:16",
+          "prompt": "Tall 9:16 phone background. A bright open sky in the upper two thirds, soft clouds along the bottom, the pentagram circle far below in perspective."
+        }
+      ]
+    },
+    "icons": {
+      "aspect_ratio": "1:1",
+      "image_size": "1K",
+      "chroma_key": true,
+      "prefix": "Subject: a single minimal glossy icon in clean Frutiger Aero style: simple rounded shape, smooth aqua-blue glass or white glossy plastic, one white highlight on top, one small sunny-yellow accent, very few details, centred, front view, readable at 32 pixels. Isolated on a perfectly flat, uniform solid magenta (#FF00FF) colour field used for cut-out, with nothing else on it and no shadow on it.",
+      "items": [
+        {
+          "file": "icons/icon-synth.png",
+          "prompt": "A compact synthesizer keyboard with white and aqua keys and two small yellow knobs."
+        },
+        {
+          "file": "icons/icon-effetti.png",
+          "prompt": "A big glossy rotary knob with a yellow indicator line and a ring of small dots around it."
+        },
+        {
+          "file": "icons/icon-drum.png",
+          "prompt": "A round snare drum seen from slightly above, aqua shell, white drum head, yellow tension rods."
+        },
+        {
+          "file": "icons/icon-bundle.png",
+          "prompt": "Three stacked glossy aqua gift boxes tied with yellow ribbons."
+        },
+        {
+          "file": "icons/icon-cart.png",
+          "prompt": "A shopping cart made of chrome and aqua gel, with a small yellow star inside."
+        },
+        {
+          "file": "icons/icon-star.png",
+          "prompt": "A plump five-pointed star in glossy sunny yellow with a white highlight and two tiny bubbles beside it."
+        },
+        {
+          "file": "icons/icon-mac.png",
+          "prompt": "A sleek white laptop with the lid open, aqua glowing screen, seen from the front."
+        },
+        {
+          "file": "icons/icon-windows.png",
+          "prompt": "A floating application window: a rounded glossy blue glass rectangle with a title bar and three small dots in the corner."
+        }
+      ],
+      "trim": true
+    },
+    "sprites": {
+      "aspect_ratio": "1:1",
+      "image_size": "1K",
+      "chroma_key": true,
+      "prefix": "Subject: a single element for an animated background. Isolated on a perfectly flat, uniform solid magenta (#FF00FF) colour field used for cut-out, with nothing else on it and no shadow on it.",
+      "items": [
+        {
+          "file": "sprites/bubble.png",
+          "prompt": "One perfectly round, clean soap bubble, centred, with a thin crisp white rim, a very light blue sheen, a bright white highlight at the top left and a tiny sunny-yellow glint at the bottom right. Its inside is see-through to the flat magenta background."
+        }
+      ],
+      "trim": true
+    },
+    "mascot": {
+      "aspect_ratio": "3:4",
+      "image_size": "1K",
+      "chroma_key": true,
+      "prefix": "Character: the StarPlugzz mascot, an original anime girl created for this brand, drawn like a polished 2000s anime wallpaper illustration. Very long flowing twin tails in bright sky blue (#33C1F0) with white highlights, tied high with sunny-yellow star-shaped hair clips; big sky-blue eyes; a cropped white jacket with long sleeves and Aero-blue panels over a deep-navy bodysuit with a small yellow star emblem, white thigh-high boots, translucent glass headphones resting around her neck. Clean anime cel shading, crisp line art, glossy highlights. Full body, the whole figure inside the frame. Background: perfectly flat, uniform solid magenta (#FF00FF) colour field for cut-out, with nothing else on it.",
+      "items": [
+        {
+          "file": "mascot/mascot-stand.png",
+          "prompt": "Pose: standing in a relaxed three-quarter view turned slightly to the left, hands loosely together in front, calm gentle expression, twin tails flowing to the side as if in a breeze."
+        },
+        {
+          "file": "mascot/mascot-wave.png",
+          "prompt": "Pose: standing, waving hello with one hand and winking, the other hand on her hip.",
+          "reference": "mascot/mascot-stand.png"
+        },
+        {
+          "file": "mascot/mascot-cheer.png",
+          "reference": "mascot/mascot-stand.png",
+          "prompt": "Same character as the reference image, identical design and outfit. Pose: jumping happily with both fists raised, holding a small glowing glass star."
+        },
+        {
+          "file": "mascot/mascot-sit.png",
+          "reference": "mascot/mascot-stand.png",
+          "prompt": "Same character as the reference image, identical design and outfit. Pose: sitting cross-legged hugging a large soap bubble like a pillow, sleepy content smile."
+        },
+        {
+          "file": "mascot/mascot-point.png",
+          "reference": "mascot/mascot-stand.png",
+          "prompt": "Same character as the reference image, identical design and outfit. Pose: leaning forward and pointing to the right with a confident grin."
+        }
+      ],
+      "trim": true,
+      "azure": true
+    },
+    "decor": {
+      "aspect_ratio": "2:3",
+      "image_size": "1K",
+      "chroma_key": true,
+      "prefix": "Background: perfectly flat, uniform solid magenta (#FF00FF) colour field for cut-out, with nothing else on it. This one subject is plain monochrome ink art rather than glass.",
+      "items": [
+        {
+          "file": "decor/scolopendra.png",
+          "prompt": "A single centipede (scolopendra) drawn as a black-ink engraving in tattoo-flash style, stippled shading, body curving in a graceful S shape, fine linework, monochrome black only."
+        }
+      ],
+      "trim": true
+    }
+  }
+}
