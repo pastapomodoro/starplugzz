@@ -73,6 +73,8 @@ type CartContextValue = {
   add: (slug: string, platform: Platform) => void;
   setQty: (key: string, qty: number) => void;
   remove: (key: string) => void;
+  /** Empties the cart (after a completed payment). */
+  clear: () => void;
 };
 
 const CartContext = createContext<CartContextValue | null>(null);
@@ -104,6 +106,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
     update((prev) => prev.filter((l) => lineKey(l.slug, l.platform) !== key));
   }, []);
 
+  const clear = useCallback(() => update(() => []), []);
+
   const open = useCallback(() => setIsOpen(true), []);
   const close = useCallback(() => setIsOpen(false), []);
 
@@ -122,8 +126,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
       add,
       setQty,
       remove,
+      clear,
     };
-  }, [stored, isOpen, open, close, add, setQty, remove]);
+  }, [stored, isOpen, open, close, add, setQty, remove, clear]);
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 }
