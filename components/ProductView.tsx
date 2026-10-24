@@ -8,6 +8,7 @@ import { CATEGORY_LABEL, formatPrice, formatsFor, PLATFORM_LABEL, type Platform 
 import { ProductImage } from "./ProductImage";
 import { AddButton } from "./AddButton";
 import { StoreButton } from "./StoreButton";
+import { WhopBuy } from "./WhopBuy";
 import { Shelf } from "./Shelf";
 import { useCascade } from "./Shelves";
 import type { ShelfProduct } from "./ProductCard";
@@ -133,7 +134,9 @@ export function ProductView({
                   {formatPrice(product.price)}
                 </span>
               )}
-              {product.store ? (
+              {product.whopPlanId ? (
+                <WhopBuy planId={product.whopPlanId} />
+              ) : product.store ? (
                 <StoreButton url={product.store.url} label={product.store.label} name={product.name} size="lg" />
               ) : (
                 <AddButton
@@ -147,9 +150,9 @@ export function ProductView({
               )}
             </motion.div>
 
-            {product.store && product.vendor && (
+            {(product.store || product.whopPlanId) && (
               <motion.p variants={item} className="-mt-2 text-[13px] text-ink-soft">
-                Purchase and license on the official {product.vendor} site.
+                Purchase and license on the seller&apos;s site.
               </motion.p>
             )}
           </motion.div>

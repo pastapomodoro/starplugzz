@@ -106,7 +106,6 @@ export function CartDrawer({
   const { platform } = useRoute();
   const reduce = useReducedMotion();
   const closeRef = useRef<HTMLButtonElement>(null);
-  const [checkout, setCheckout] = useState<"idle" | "demo">("idle");
 
   // Freeze page scroll under the sheet, focus the close button, Esc closes.
   useEffect(() => {
@@ -123,12 +122,6 @@ export function CartDrawer({
       prev?.focus?.();
     };
   }, [isOpen, close]);
-
-  useEffect(() => {
-    if (checkout !== "demo") return;
-    const t = setTimeout(() => setCheckout("idle"), 1600);
-    return () => clearTimeout(t);
-  }, [checkout]);
 
   const onDragEnd = (_: unknown, info: PanInfo) => {
     if (info.offset.x > 110 || info.velocity.x > 600) close();
@@ -211,15 +204,6 @@ export function CartDrawer({
                     <span className="text-[15px] text-ink-soft">Total</span>
                     <span className="text-[26px] font-semibold tracking-[-0.02em] tabular-nums">{formatPrice(total)}</span>
                   </div>
-                  <motion.button
-                    type="button"
-                    onClick={() => setCheckout("demo")}
-                    whileTap={{ scale: 0.97 }}
-                    transition={PRESS}
-                    className="sun-fill h-12 rounded-full text-[16px] font-medium"
-                  >
-                    {checkout === "demo" ? "Demo" : "Checkout"}
-                  </motion.button>
                 </footer>
               </>
             )}

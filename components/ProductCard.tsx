@@ -89,7 +89,7 @@ export function ProductCard({
                 name={product.name}
                 tabIndex={clone ? -1 : undefined}
               />
-            ) : (
+            ) : product.whopPlanId ? null : (
               <AddButton
                 slug={product.slug}
                 name={product.name}

@@ -43,6 +43,8 @@ export type Product = {
   image?: string;
   /** Invented demo entry: replace with the real plugin. */
   placeholder?: true;
+  /** Whop plan (plan_...) sold on this site: the page opens Whop's checkout inside it. */
+  whopPlanId?: string;
 
   /**
    * Showcase of a plugin sold by its maker: the page shows it and the button sends
@@ -85,7 +87,8 @@ export const products: readonly Product[] = [
     ],
     extraFormats: ["Standalone"],
     gallery: [{ src: "/products/acid-v/fx.webp", alt: "Acid V effects section", width: 600, height: 384 }],
-    store: { label: "View on arturia.com", url: "https://www.arturia.com/products/software-instruments/acid-v/overview" },
+    price: 15,
+    whopPlanId: "plan_XOjnwJNdDlsHE",
   },
   {
     slug: "punchbox-2",
