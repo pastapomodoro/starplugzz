@@ -13,8 +13,8 @@ export type ShelfRow = { category: Category; products: ShelfProduct[] };
 const LOOK: Record<Category, { speed: number; cardWidth: string; gap: number; className: string }> = {
   // A slow drift (px/s): the shelves should read as gently moving, not racing.
   Synth: { speed: 16, cardWidth: "clamp(260px,74vw,330px)", gap: 26, className: "" },
-  Effetti: { speed: 20, cardWidth: "clamp(210px,58vw,250px)", gap: 16, className: "lg:ml-[5vw]" },
-  Drum: { speed: 18, cardWidth: "clamp(236px,66vw,290px)", gap: 34, className: "lg:ml-[1.5vw]" },
+  Effetti: { speed: 20, cardWidth: "clamp(210px,58vw,250px)", gap: 16, className: "" },
+  Drum: { speed: 18, cardWidth: "clamp(236px,66vw,290px)", gap: 34, className: "" },
   DAW: { speed: 16, cardWidth: "clamp(260px,74vw,330px)", gap: 26, className: "" },
   Bundle: { speed: 14, cardWidth: "clamp(236px,66vw,290px)", gap: 22, className: "" },
 };
